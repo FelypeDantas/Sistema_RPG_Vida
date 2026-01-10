@@ -13,10 +13,10 @@ export function usePlayerState() {
 
   function completeMission(id: number) {
     setState(prev => {
-      const mission = prev.missions.find(m => m.id === id);
-      if (!mission || mission.done) return prev;
+      const quest = prev.quests.find(q => q.id === id);
+      if (!quest || quest.completed) return prev;
 
-      let newXP = prev.player.currentXP + mission.xp;
+      let newXP = prev.player.currentXP + quest.xp;
       let newLevel = prev.player.level;
       let nextXP = prev.player.nextLevelXP;
 
@@ -28,20 +28,20 @@ export function usePlayerState() {
 
       return {
         ...prev,
-        missions: prev.missions.map(m =>
-          m.id === id ? { ...m, done: true } : m
+        quests: prev.quests.map(q =>
+          q.id === id ? { ...q, completed: true, streak: q.streak + 1 } : q
         ),
         player: {
           ...prev.player,
           currentXP: newXP,
-          totalXP: prev.player.totalXP + mission.xp,
+          totalXP: prev.player.totalXP + quest.xp,
           level: newLevel,
           nextLevelXP: nextXP
         },
         attributes: {
           ...prev.attributes,
-          [mission.tag]:
-            prev.attributes[mission.tag] + Math.floor(mission.xp / 10)
+          [quest.attribute]:
+            prev.attributes[quest.attribute] + Math.floor(quest.xp / 10)
         }
       };
     });
