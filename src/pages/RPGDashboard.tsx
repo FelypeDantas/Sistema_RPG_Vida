@@ -1,6 +1,6 @@
 import { usePlayerState } from "@/hooks/usePlayerState";
-import { AvatarCard } from "@/components/lovable/AvatarCard";
-import { QuestList } from "@/components/lovable/QuestList";
+import { AvatarCard } from "@/components/rpg/AvatarCard";
+import { QuestList } from "@/components/rpg/QuestCard";
 
 export default function Dashboard() {
   const { state, completeMission } = usePlayerState();
