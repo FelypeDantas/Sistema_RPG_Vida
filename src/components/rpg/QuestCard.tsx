@@ -1,7 +1,6 @@
 import { Check, Flame, Zap } from "lucide-react";
 
-interface Quest {
-  id: number;
+export interface Quest {
   title: string;
   xp: number;
   attribute: string;
@@ -11,97 +10,56 @@ interface Quest {
 
 interface QuestCardProps {
   quest: Quest;
-  onComplete: (id: number) => void;
+  onComplete: () => void;
 }
 
 const attributeColors: Record<string, string> = {
-  "Físico": "text-neon-red border-neon-red/30 bg-neon-red/10",
-  "Mente": "text-neon-blue border-neon-blue/30 bg-neon-blue/10",
-  "Social": "text-neon-purple border-neon-purple/30 bg-neon-purple/10",
-  "Finanças": "text-neon-green border-neon-green/30 bg-neon-green/10"
+  "Físico": "bg-red-100 text-red-600",
+  "Mente": "bg-blue-100 text-blue-600",
+  "Social": "bg-purple-100 text-purple-600",
+  "Finanças": "bg-green-100 text-green-600"
 };
 
 export const QuestCard = ({ quest, onComplete }: QuestCardProps) => {
   return (
     <div
-      onClick={() => !quest.completed && onComplete(quest.id)}
+      onClick={onComplete}
       className={`
-        relative p-4 rounded-xl border transition-all duration-300 cursor-pointer
-        ${quest.completed 
-          ? 'bg-neon-green/10 border-neon-green/30' 
-          : 'bg-cyber-darker border-white/10 hover:border-neon-cyan/50 hover:bg-cyber-card'
-        }
+        p-4 rounded-xl border cursor-pointer transition
+        ${quest.completed ? "bg-green-100 border-green-300" : "bg-background hover:bg-muted"}
       `}
     >
-      <div className="flex items-start justify-between">
-        <div className="flex items-start gap-3">
-          {/* Checkbox */}
-          <div
-            className={`
-              w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all
-              ${quest.completed 
-                ? 'bg-neon-green border-neon-green' 
-                : 'border-gray-600 hover:border-neon-cyan'
-              }
-            `}
-          >
-            {quest.completed && <Check className="w-4 h-4 text-cyber-dark" />}
-          </div>
+      <div className="flex justify-between items-start">
+        <div>
+          <h4 className={`font-medium ${quest.completed && "line-through text-muted-foreground"}`}>
+            {quest.title}
+          </h4>
 
-          <div>
-            <h4
-              className={`font-medium ${
-                quest.completed
-                  ? 'text-gray-400 line-through'
-                  : 'text-white'
-              }`}
-            >
-              {quest.title}
-            </h4>
+          <div className="flex gap-2 mt-1">
+            <span className={`text-xs px-2 py-0.5 rounded ${attributeColors[quest.attribute]}`}>
+              {quest.attribute}
+            </span>
 
-            <div className="flex items-center gap-2 mt-1">
-              <span
-                className={`text-xs px-2 py-0.5 rounded-full border ${
-                  attributeColors[quest.attribute]
-                }`}
-              >
-                {quest.attribute}
+            {quest.streak > 0 && (
+              <span className="flex items-center gap-1 text-xs text-orange-500">
+                <Flame className="w-3 h-3" />
+                {quest.streak}
               </span>
-
-              {quest.streak > 0 && (
-                <span className="flex items-center gap-1 text-xs text-neon-orange">
-                  <Flame className="w-3 h-3" />
-                  {quest.streak}
-                </span>
-              )}
-            </div>
+            )}
           </div>
         </div>
 
-        {/* XP Reward */}
-        <div
-          className={`
-            flex items-center gap-1 px-2 py-1 rounded-lg
-            ${quest.completed ? 'bg-neon-green/20' : 'bg-neon-cyan/10'}
-          `}
-        >
-          <Zap
-            className={`w-4 h-4 ${
-              quest.completed ? 'text-neon-green' : 'text-neon-cyan'
-            }`}
-          />
-          <span
-            className={`font-bold text-sm ${
-              quest.completed ? 'text-neon-green' : 'text-neon-cyan'
-            }`}
-          >
-            +{quest.xp}
-          </span>
+        <div className="flex items-center gap-1 text-cyan-600 font-bold">
+          <Zap className="w-4 h-4" />
+          +{quest.xp}
         </div>
       </div>
 
       {quest.completed && (
-        <div className="absolute inset-0 rounded-xl bg-neon-green/5 animate-pulse pointer-events-none" />
+        <div className="flex items-center gap-1 mt-2 text-green-600 text-xs">
+          <Check className="w-3 h-3" />
+          Concluída
+        </div>
       )}
     </div>
   );

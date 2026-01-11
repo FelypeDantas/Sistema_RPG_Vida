@@ -1,6 +1,6 @@
-import { usePlayerState } from "@/hooks/usePlayerState";
 import { AvatarCard } from "@/components/rpg/AvatarCard";
 import { QuestList } from "@/components/rpg/QuestList";
+import { usePlayerState } from "@/hooks/usePlayerState";
 
 export default function Dashboard() {
   const { state, completeMission } = usePlayerState();
@@ -9,16 +9,24 @@ export default function Dashboard() {
     (state.player.currentXP / state.player.nextLevelXP) * 100;
 
   return (
-    <main className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+    <div className="space-y-6">
+      {/* Card do Player */}
       <AvatarCard
         player={state.player}
         xpProgress={xpProgress}
       />
 
-      <QuestList
-        quests={state.quests}
-        onComplete={completeMission}
-      />
-    </main>
+      {/* Quests */}
+      <div className="rounded-xl border bg-background p-4">
+        <h3 className="text-lg font-semibold mb-4">
+          Quests do Dia
+        </h3>
+
+        <QuestList
+          quests={state.quests}
+          onComplete={completeMission}
+        />
+      </div>
+    </div>
   );
 }
