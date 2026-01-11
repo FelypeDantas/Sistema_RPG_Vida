@@ -17,7 +17,7 @@ export default function Dashboard() {
       />
 
       {/* Quests */}
-      <div className="rounded-xl border bg-background p-4">
+      <div className="rounded-xl border bg-background p-4 card-missoes">
         <h3 className="text-lg font-semibold mb-4">
           Quests do Dia
         </h3>
@@ -26,6 +26,7 @@ export default function Dashboard() {
           quests={state.quests}
           onComplete={completeMission}
         />
+
       </div>
     </div>
   );
